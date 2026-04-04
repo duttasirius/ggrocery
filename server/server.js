@@ -5,6 +5,10 @@ import connectDB from "./configs/db.js";
 import "dotenv/config";
 import userRouter from "./routes/userRoute.js";
 import sellerRouter from "./routes/sellerRoutes.js";
+import connectCloudinary from "./configs/cloudinary.js";
+import productRouter from "./routes/productRoute.js";
+import cartRoute from "./routes/cartRoute.js";
+import addressRouter from "./routes/addressRoute.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -12,6 +16,7 @@ const port = process.env.PORT || 4000;
 const allowedOrigins = ["http://localhost:3000"];
 // DATABASE CONNECTION
 await connectDB();
+await connectCloudinary();
 
 // MIDDLEWARE
 app.use(express.json());
@@ -21,6 +26,9 @@ app.use(cors({ origin: allowedOrigins, credentials: true }));
 app.get("/", (req, res) => res.send("API IS WORKING"));
 app.use("/api/user", userRouter);
 app.use("/api/seller", sellerRouter);
+app.use("/api/product", productRouter);
+app.use("/api/cart", cartRoute);
+app.use("/api/address", addressRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
