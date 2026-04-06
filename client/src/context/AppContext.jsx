@@ -59,6 +59,39 @@ export const AppContextProvider = ({ children }) => {
     toast.success("REMOVE FROM CART");
   };
 
+  // GET CART ITEM COUNT
+  const getCartCount = () => {
+    let totalCount = 0;
+
+    for (const item in cartItems) {
+      totalCount += cartItems[item];
+    }
+    return totalCount;
+  };
+
+  // GET CART TOTAL AMOUNT
+  const getCartAmount = () => {
+    let totalAmount = 0;
+    // Initialize total amount to 0
+
+    for (const items in cartItems) {
+      // Loop through each item ID (key) in cartItems object
+
+      let itemInfo = products.find((product) => product._id === items);
+      // Find the product in products array whose _id matches the current item ID
+
+      if (cartItems[items] > 0 && itemInfo) {
+        // Check if quantity > 0 AND product exists
+
+        totalAmount += itemInfo.offerPrice * cartItems[items];
+        // Add (price × quantity) to totalAmount
+      }
+    }
+
+    return totalAmount;
+    // Return the final calculated cart total
+  };
+
   useEffect(() => {
     fetchProducts();
   }, []);
@@ -79,6 +112,8 @@ export const AppContextProvider = ({ children }) => {
     setCartItems,
     searchQuery,
     setSearchQuery,
+    getCartCount,
+    getCartAmount,
   };
 
   return <AppContext.Provider value={value}>{children}</AppContext.Provider>;
