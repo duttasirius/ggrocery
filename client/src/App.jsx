@@ -14,6 +14,9 @@ import AddAddress from "./pages/AddAddress";
 import MyOrders from "./pages/MyOrders";
 import SellerLogin from "./components/seller/SellerLogin";
 import SellerLayout from "./pages/seller/SellerLayout";
+import AddProduct from "./pages/seller/AddProduct";
+import ProductList from "./pages/seller/ProductList";
+import Order from "./pages/seller/Order";
 
 const App = () => {
   const isSellerPath = useLocation().pathname.includes("seller");
@@ -38,7 +41,11 @@ const App = () => {
           <Route
             path="/seller"
             element={isSeller ? <SellerLayout /> : <SellerLogin />}
-          ></Route>
+          >
+            <Route index element={isSeller ? <AddProduct /> : null} />
+            <Route path="product-list" element={<ProductList />} />
+            <Route path="orders" element={<Order />} />
+          </Route>
         </Routes>
       </div>
       {!isSellerPath && <Footer />}
@@ -46,6 +53,6 @@ const App = () => {
   );
 };
 
-//
+// work due 8.30 - 8h46 min
 
 export default App;

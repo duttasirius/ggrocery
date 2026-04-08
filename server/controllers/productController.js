@@ -5,7 +5,7 @@ import fs from "fs";
 // add product : api/product/add
 export const addProduct = async (req, res) => {
   try {
-    const productData = req.body;
+    const productData = JSON.parse(req.body.productData); // ✅ FIX
 
     const images = req.files;
 
@@ -19,11 +19,7 @@ export const addProduct = async (req, res) => {
           resource_type: "image",
         });
 
-        try {
-          fs.unlinkSync(item.path);
-        } catch (err) {
-          console.log("File delete failed:", err.message);
-        }
+        fs.unlinkSync(item.path);
 
         return result.secure_url;
       }),
@@ -41,7 +37,7 @@ export const addProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: "Server Error" });
+    res.status(500).json({ message: error.message }); // better debugging
   }
 };
 

@@ -14,8 +14,7 @@ import orderRouter from "./routes/orderRoute.js";
 const app = express();
 const port = process.env.PORT || 4000;
 
-const allowedOrigins = ["http://localhost:3000"];
-// DATABASE CONNECTION
+const allowedOrigins = ["http://localhost:5173"]; // DATABASE CONNECTION
 await connectDB();
 await connectCloudinary();
 
