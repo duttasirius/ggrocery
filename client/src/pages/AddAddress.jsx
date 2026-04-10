@@ -1,5 +1,8 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { assets } from "../assets/assets";
+import axios from "axios";
+import toast from "react-hot-toast";
+import { useNavigate } from "react-router-dom";
 
 /* INPUT FIELD COMPONENT */
 const InputField = ({ type, placeHolder, name, handleChange, address }) => {
@@ -39,6 +42,8 @@ const AddAddress = () => {
     phone: "",
   });
 
+  const navigate = useNavigate();
+
   const handleChange = (e) => {
     const { name, value } = e.target;
     setAddress((prev) => ({
@@ -47,9 +52,25 @@ const AddAddress = () => {
     }));
   };
 
-  const onSubmitHandler = (e) => {
-    e.preventDefault();
-    console.log(address);
+  const onSubmitHandler = async (e) => {
+    try {
+      e.preventDefault();
+
+      const { data } = await axios.post(
+        "/api/address/add",
+        { address },
+        { withCredentials: true },
+      );
+
+      if (data.success) {
+        toast.success(data.message);
+        navigate("/cart");
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
   };
 
   return (

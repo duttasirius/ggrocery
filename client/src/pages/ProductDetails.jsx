@@ -115,11 +115,7 @@ const ProductDetails = () => {
 
             {/* 📝 Description */}
             <p className="mt-6 font-medium">About Product</p>
-            <ul className="list-disc ml-5 text-gray-600 text-sm mt-2 space-y-1">
-              {product.description.map((desc, index) => (
-                <li key={index}>{desc}</li>
-              ))}
-            </ul>
+            <p>{product.description}</p>
 
             {/* 🛒 Buttons */}
             <div className="flex gap-4 mt-8">
