@@ -1,11 +1,27 @@
 import { useEffect, useState } from "react";
 import { assets, dummyOrders } from "../../assets/assets";
+import axios from "axios";
+import toast from "react-hot-toast";
 
 const Order = () => {
   const [orders, setOrders] = useState([]);
 
+  const fetchOrders = async () => {
+    try {
+      const { data } = await axios.get("/api/order/seller");
+
+      if (data.success) {
+        setOrders(data.orders || data.order || []);
+      } else {
+        toast.error(data.message);
+      }
+    } catch (error) {
+      toast.error(error.message);
+    }
+  };
+
   useEffect(() => {
-    setOrders(dummyOrders);
+    fetchOrders();
   }, []);
 
   return (
@@ -37,7 +53,7 @@ const Order = () => {
                     <p key={i} className="text-gray-800 font-medium">
                       {item.product.name}
                       <span className="ml-2 text-sm text-gray-500">
-                        × {item.quantity}
+                        X {item.quantity}
                       </span>
                     </p>
                   ))}

@@ -1,21 +1,35 @@
 import React, { useEffect, useState } from "react";
 import { dummyOrders } from "../assets/assets";
+import { useAppContext } from "../context/AppContext";
+import axios from "axios";
 
 const MyOrders = () => {
   const [myOrder, setMyOrder] = useState([]);
 
+  const { user } = useAppContext();
+
   const fetchMyOrders = async () => {
-    setMyOrder(dummyOrders);
+    try {
+      const { data } = await axios.get("/api/order/user");
+
+      if (data.success) {
+        setMyOrder(data.orders || data.order || []); // safe fallback
+      }
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   useEffect(() => {
-    fetchMyOrders();
-  }, []);
+    if (user) {
+      fetchMyOrders();
+    }
+  }, [user]);
 
   return (
     <div className="max-w-5xl mx-auto mt-16 px-4 pb-16">
       {/* Heading */}
-      <h1 className="text-2xl font-semibold mb-6">🧾 My Orders</h1>
+      <h1 className="text-2xl font-semibold mb-6"> My Orders</h1>
 
       {myOrder.map((order, index) => (
         <div
