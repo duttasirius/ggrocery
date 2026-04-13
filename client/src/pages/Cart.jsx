@@ -72,21 +72,40 @@ const Cart = () => {
     }
 
     try {
-      const { data } = await axios.post("/api/order/cod", {
-        items: cartArray.map((item) => ({
-          product: item._id,
-          quantity: item.quantity,
-        })),
-        address: selectAddress._id,
-      });
+      if (paymentOption === "cod") {
+        // ✅ COD flow
+        const { data } = await axios.post("/api/order/cod", {
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectAddress._id,
+        });
 
-      if (data.success) {
-        toast.success(data.message);
-        setCartItems({});
-        navigate("/my-orders");
+        if (data.success) {
+          toast.success(data.message);
+          setCartItems({});
+          navigate("/my-orders");
+        } else {
+          toast.error(data.message); // ✅ Fix 1: only one else per if
+        }
       } else {
-        toast.error(data.message);
-      }
+        // ✅ Fix 2: Stripe flow moved to top-level condition, not inside COD handler
+        const { data: stripeData } = await axios.post("/api/order/stripe", {
+          // ✅ Fix 3: renamed to avoid redeclaration
+          items: cartArray.map((item) => ({
+            product: item._id,
+            quantity: item.quantity,
+          })),
+          address: selectAddress._id,
+        });
+
+        if (stripeData.success) {
+          window.location.replace(stripeData.url); // redirects to Stripe checkout
+        } else {
+          toast.error(stripeData.message);
+        }
+      } // ✅ Fix 4: properly closed all blocks
     } catch (error) {
       toast.error(error.message);
     }
