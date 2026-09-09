@@ -5,22 +5,23 @@ import fs from "fs";
 // add product : api/product/add
 export const addProduct = async (req, res) => {
   try {
-    const productData = JSON.parse(req.body.productData); // ✅ FIX
-
+    const productData = JSON.parse(req.body.productData);
     const images = req.files;
 
-    if (!images || images.length === 0) {
-      return res.status(400).json({ message: "No images uploaded" });
+    if (!images || images.length !== 4) {
+      return res.status(400).json({
+        success: false,
+        message: "Please upload exactly 4 product images",
+      });
     }
 
-    let imagesUrl = await Promise.all(
+    const imagesUrl = await Promise.all(
       images.map(async (item) => {
         const result = await cloudinary.uploader.upload(item.path, {
           resource_type: "image",
         });
 
         fs.unlinkSync(item.path);
-
         return result.secure_url;
       }),
     );
@@ -37,7 +38,7 @@ export const addProduct = async (req, res) => {
     });
   } catch (error) {
     console.log(error);
-    res.status(500).json({ message: error.message }); // better debugging
+    res.status(500).json({ message: error.message });
   }
 };
 
@@ -60,13 +61,9 @@ export const productList = async (req, res) => {
 export const productById = async (req, res) => {
   try {
     const { id } = req.body;
-
     const product = await Product.findById(id);
 
-    res.json({
-      success: true,
-      product,
-    });
+    res.json({ success: true, product });
   } catch (error) {
     console.log(error);
   }
@@ -76,17 +73,9 @@ export const productById = async (req, res) => {
 export const changeStock = async (req, res) => {
   try {
     const { id, inStock } = req.body;
+    const product = await Product.findByIdAndUpdate(id, { inStock }, { new: true });
 
-    const product = await Product.findByIdAndUpdate(
-      id,
-      { inStock },
-      { new: true },
-    );
-
-    res.json({
-      success: true,
-      product,
-    });
+    res.json({ success: true, product });
   } catch (error) {
     console.log(error);
     res.json({ success: false, message: error.message });
