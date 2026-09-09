@@ -52,9 +52,9 @@ const seedProductReviews = async () => {
       const targetCount = Math.min(8, Math.max(2, 2 + (productIndex % 7)));
       const needed = targetCount - existingCount;
       const existingNames = new Set(
-        (
-          await CustomerReview.find({ product: product._id }).select("name")
-        ).map((review) => review.name),
+        (await CustomerReview.find({ product: product._id }).select("name")).map(
+          (review) => review.name,
+        ),
       );
 
       for (let reviewIndex = 0; reviewIndex < needed; reviewIndex += 1) {
@@ -67,9 +67,6 @@ const seedProductReviews = async () => {
 
         const rating = 4 + ((productIndex + reviewIndex) % 2);
         const text = reviewTexts[(productIndex + reviewIndex) % reviewTexts.length];
-
-        // Seed reviews use a deterministic placeholder ObjectId. They are marked
-        // by this fixed prefix so this script can safely be run again.
         const userId = new mongoose.Types.ObjectId();
 
         await CustomerReview.create({
@@ -80,6 +77,7 @@ const seedProductReviews = async () => {
           text,
         });
 
+        existingNames.add(name);
         created += 1;
       }
 
