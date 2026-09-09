@@ -6,7 +6,12 @@ const customerReviewSchema = new mongoose.Schema(
       type: mongoose.Schema.Types.ObjectId,
       ref: "user",
       required: true,
-      unique: true,
+      index: true,
+    },
+    product: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "product",
+      required: true,
       index: true,
     },
     name: {
@@ -31,6 +36,8 @@ const customerReviewSchema = new mongoose.Schema(
   },
   { timestamps: true },
 );
+
+customerReviewSchema.index({ user: 1, product: 1 }, { unique: true });
 
 const CustomerReview = mongoose.model("customerReview", customerReviewSchema);
 
