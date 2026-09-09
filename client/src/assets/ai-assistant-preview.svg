@@ -1,0 +1,96 @@
+<svg width="1200" height="720" viewBox="0 0 1200 720" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <linearGradient id="bg" x1="0" y1="0" x2="1200" y2="720" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#064E3B"/>
+      <stop offset="0.52" stop-color="#059669"/>
+      <stop offset="1" stop-color="#0F766E"/>
+    </linearGradient>
+    <linearGradient id="bubble" x1="735" y1="130" x2="1110" y2="625" gradientUnits="userSpaceOnUse">
+      <stop stop-color="#F8FFFC"/>
+      <stop offset="1" stop-color="#ECFDF5"/>
+    </linearGradient>
+    <filter id="shadow" x="690" y="78" width="450" height="590" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+      <feDropShadow dx="0" dy="20" stdDeviation="24" flood-color="#022C22" flood-opacity="0.28"/>
+    </filter>
+  </defs>
+
+  <rect width="1200" height="720" rx="38" fill="url(#bg)"/>
+  <circle cx="1080" cy="50" r="190" fill="#A7F3D0" fill-opacity="0.10"/>
+  <circle cx="70" cy="650" r="210" fill="#5EEAD4" fill-opacity="0.10"/>
+
+  <g transform="translate(76 74)">
+    <rect width="48" height="48" rx="16" fill="#FFFFFF" fill-opacity="0.15" stroke="#FFFFFF" stroke-opacity="0.25"/>
+    <path d="M15 25.5C15 19.7 19.7 15 25.5 15H32.5C38.3 15 43 19.7 43 25.5V30.5C43 36.3 38.3 41 32.5 41H27.3L20.3 45V38.4C17.1 36.5 15 33.1 15 30V25.5Z" stroke="white" stroke-width="2.5" stroke-linejoin="round"/>
+    <path d="M23 26H35M23 31H31" stroke="white" stroke-width="2.5" stroke-linecap="round"/>
+  </g>
+
+  <text x="76" y="178" fill="white" font-family="Inter, Arial, sans-serif" font-size="58" font-weight="800">GreenCart AI</text>
+  <text x="78" y="224" fill="#D1FAE5" font-family="Inter, Arial, sans-serif" font-size="24" font-weight="500">Your personal grocery finder</text>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="78" y="282" width="520" height="72" rx="20" fill="#FFFFFF" fill-opacity="0.12" stroke="#FFFFFF" stroke-opacity="0.17"/>
+    <text x="104" y="326" fill="#ECFDF5" font-size="20" font-weight="500">“healthy breakfast”</text>
+
+    <text x="78" y="408" fill="#FFFFFF" font-size="18" font-weight="700">Natural-language discovery</text>
+    <text x="78" y="441" fill="#D1FAE5" font-size="16">Ask for categories, use cases, dietary ideas,</text>
+    <text x="78" y="467" fill="#D1FAE5" font-size="16">or a product name — even with small typos.</text>
+
+    <text x="78" y="526" fill="#FFFFFF" font-size="18" font-weight="700">Hybrid retrieval architecture</text>
+    <text x="78" y="559" fill="#D1FAE5" font-size="16">Gemini intent understanding + deterministic</text>
+    <text x="78" y="585" fill="#D1FAE5" font-size="16">catalogue matching + safe fallback.</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="710" y="92" width="390" height="550" rx="30" fill="url(#bubble)"/>
+  </g>
+
+  <g font-family="Inter, Arial, sans-serif">
+    <rect x="710" y="92" width="390" height="76" rx="30" fill="#047857"/>
+    <circle cx="750" cy="130" r="19" fill="#FFFFFF" fill-opacity="0.16"/>
+    <path d="M741 128C741 123 745 119 750 119C755 119 759 123 759 128V134C759 139 755 143 750 143C745 143 741 139 741 134V128Z" stroke="white" stroke-width="1.8"/>
+    <path d="M744 131H756M746 135H753" stroke="white" stroke-width="1.8" stroke-linecap="round"/>
+    <text x="781" y="130" fill="white" font-size="18" font-weight="800">GreenCart AI</text>
+    <text x="781" y="151" fill="#D1FAE5" font-size="11" font-weight="500">AI shopping assistant</text>
+
+    <rect x="735" y="193" width="285" height="52" rx="17" fill="#10B981"/>
+    <text x="759" y="225" fill="white" font-size="15" font-weight="600">healthy breakfast</text>
+
+    <circle cx="751" cy="283" r="15" fill="#D1FAE5"/>
+    <path d="M744 280C744 276.2 747.2 273 751 273C754.8 273 758 276.2 758 280V284C758 287.8 754.8 291 751 291C747.2 291 744 287.8 744 284V280Z" stroke="#047857" stroke-width="1.6"/>
+    <text x="776" y="280" fill="#334155" font-size="14" font-weight="600">Here are a few good matches</text>
+    <text x="776" y="301" fill="#64748B" font-size="12">from the current store catalogue.</text>
+
+    <g>
+      <rect x="735" y="326" width="330" height="76" rx="18" fill="white" stroke="#D1FAE5"/>
+      <rect x="749" y="340" width="48" height="48" rx="12" fill="#ECFDF5"/>
+      <circle cx="773" cy="363" r="15" fill="#FDE68A"/>
+      <text x="810" y="354" fill="#0F172A" font-size="14" font-weight="750">Brown Bread</text>
+      <text x="810" y="375" fill="#059669" font-size="12" font-weight="700">₹45</text>
+      <rect x="990" y="345" width="60" height="30" rx="10" fill="#F1F5F9"/>
+      <text x="1006" y="365" fill="#334155" font-size="11" font-weight="700">Add</text>
+    </g>
+
+    <g>
+      <rect x="735" y="414" width="330" height="76" rx="18" fill="white" stroke="#D1FAE5"/>
+      <rect x="749" y="428" width="48" height="48" rx="12" fill="#ECFDF5"/>
+      <circle cx="773" cy="452" r="15" fill="#FFFFFF" stroke="#34D399" stroke-width="5"/>
+      <text x="810" y="442" fill="#0F172A" font-size="14" font-weight="750">Amul Milk</text>
+      <text x="810" y="463" fill="#059669" font-size="12" font-weight="700">₹32</text>
+      <rect x="990" y="433" width="60" height="30" rx="10" fill="#F1F5F9"/>
+      <text x="1006" y="453" fill="#334155" font-size="11" font-weight="700">Add</text>
+    </g>
+
+    <g>
+      <rect x="735" y="502" width="330" height="76" rx="18" fill="white" stroke="#D1FAE5"/>
+      <rect x="749" y="516" width="48" height="48" rx="12" fill="#ECFDF5"/>
+      <circle cx="773" cy="540" r="15" fill="#A7F3D0"/>
+      <path d="M762 544C766 535 780 535 784 544" stroke="#047857" stroke-width="2.5" stroke-linecap="round"/>
+      <text x="810" y="530" fill="#0F172A" font-size="14" font-weight="750">Fresh Eggs</text>
+      <text x="810" y="551" fill="#059669" font-size="12" font-weight="700">₹78</text>
+      <rect x="990" y="521" width="60" height="30" rx="10" fill="#F1F5F9"/>
+      <text x="1006" y="541" fill="#334155" font-size="11" font-weight="700">Add</text>
+    </g>
+
+    <text x="735" y="614" fill="#94A3B8" font-size="10">Gemini-powered intent · validated catalogue IDs · fallback search</text>
+  </g>
+</svg>
