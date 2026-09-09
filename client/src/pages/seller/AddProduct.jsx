@@ -2,6 +2,7 @@ import { useState } from "react";
 import { assets, categories } from "../../assets/assets";
 import axios from "axios";
 import toast from "react-hot-toast";
+import { Loader2 } from "lucide-react";
 
 const AddProduct = () => {
   const [files, setFiles] = useState([]);
@@ -10,25 +11,28 @@ const AddProduct = () => {
   const [category, setCategory] = useState("");
   const [price, setPrice] = useState("");
   const [offerPrice, setOfferPrice] = useState("");
+  const [isLoading, setIsLoading] = useState(false);
 
   const onSubmitHandler = async (event) => {
+    event.preventDefault();
+
+    if (isLoading) return;
+
     try {
-      event.preventDefault();
+      setIsLoading(true);
 
       const productData = {
         name,
-        // . Handling multi-line text
-        description: description,
+        description,
         category,
         price,
         offerPrice,
       };
 
       const formData = new FormData();
+
       formData.append("productData", JSON.stringify(productData));
 
-      // Loop through all selected files and add each one to FormData
-      // using the same key ('images') so they can be uploaded together
       for (const file of files) {
         if (file) {
           formData.append("images", file);
@@ -38,19 +42,27 @@ const AddProduct = () => {
       const { data } = await axios.post("/api/product/add", formData, {
         withCredentials: true,
       });
+
       if (data.success) {
         toast.success(data.message);
+
         setName("");
         setDescription("");
         setCategory("");
         setPrice("");
         setOfferPrice("");
-        setFiles("");
+        setFiles([]);
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast(error.message);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Something went wrong while adding the product.",
+      );
+    } finally {
+      setIsLoading(false);
     }
   };
 
@@ -62,6 +74,7 @@ const AddProduct = () => {
       >
         <div>
           <p className="text-base font-medium">Product Image</p>
+
           <div className="flex flex-wrap items-center gap-3 mt-2">
             {Array(4)
               .fill("")
@@ -77,9 +90,15 @@ const AddProduct = () => {
                     type="file"
                     id={`image${index}`}
                     hidden
+                    disabled={isLoading}
                   />
+
                   <img
-                    className="max-w-24 cursor-pointer"
+                    className={`max-w-24 ${
+                      isLoading
+                        ? "cursor-not-allowed opacity-60"
+                        : "cursor-pointer"
+                    }`}
                     src={
                       files[index]
                         ? URL.createObjectURL(files[index])
@@ -93,10 +112,12 @@ const AddProduct = () => {
               ))}
           </div>
         </div>
+
         <div className="flex flex-col gap-1 max-w-md">
           <label className="text-base font-medium" htmlFor="product-name">
             Product Name
           </label>
+
           <input
             onChange={(e) => setName(e.target.value)}
             value={name}
@@ -105,8 +126,10 @@ const AddProduct = () => {
             placeholder="Type here"
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
             required
+            disabled={isLoading}
           />
         </div>
+
         <div className="flex flex-col gap-1 max-w-md">
           <label
             className="text-base font-medium"
@@ -114,6 +137,7 @@ const AddProduct = () => {
           >
             Product Description
           </label>
+
           <textarea
             onChange={(e) => setDescription(e.target.value)}
             value={description}
@@ -121,19 +145,24 @@ const AddProduct = () => {
             rows={4}
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40 resize-none"
             placeholder="Type here"
+            disabled={isLoading}
           ></textarea>
         </div>
+
         <div className="w-full flex flex-col gap-1">
           <label className="text-base font-medium" htmlFor="category">
             Category
           </label>
+
           <select
             onChange={(e) => setCategory(e.target.value)}
             value={category}
             id="category"
             className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
+            disabled={isLoading}
           >
             <option value="">Select Category</option>
+
             {categories.map((item, index) => (
               <option key={index} value={item.path}>
                 {item.text}
@@ -141,11 +170,13 @@ const AddProduct = () => {
             ))}
           </select>
         </div>
+
         <div className="flex items-center gap-5 flex-wrap">
           <div className="flex-1 flex flex-col gap-1 w-32">
             <label className="text-base font-medium" htmlFor="product-price">
               Product Price
             </label>
+
             <input
               onChange={(e) => setPrice(e.target.value)}
               value={price}
@@ -154,12 +185,15 @@ const AddProduct = () => {
               placeholder="0"
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               required
+              disabled={isLoading}
             />
           </div>
+
           <div className="flex-1 flex flex-col gap-1 w-32">
             <label className="text-base font-medium" htmlFor="offer-price">
               Offer Price
             </label>
+
             <input
               onChange={(e) => setOfferPrice(e.target.value)}
               value={offerPrice}
@@ -168,11 +202,28 @@ const AddProduct = () => {
               placeholder="0"
               className="outline-none md:py-2.5 py-2 px-3 rounded border border-gray-500/40"
               required
+              disabled={isLoading}
             />
           </div>
         </div>
-        <button className="px-8 py-2.5 bg-indigo-500 text-white font-medium rounded">
-          ADD
+
+        <button
+          type="submit"
+          disabled={isLoading}
+          className={`px-8 py-2.5 text-white font-medium rounded flex items-center justify-center gap-2 min-w-[150px] transition-all ${
+            isLoading
+              ? "bg-indigo-400 cursor-not-allowed opacity-80"
+              : "bg-indigo-500 hover:bg-indigo-600 cursor-pointer"
+          }`}
+        >
+          {isLoading ? (
+            <>
+              <Loader2 size={18} className="animate-spin" />
+              Adding...
+            </>
+          ) : (
+            "ADD"
+          )}
         </button>
       </form>
     </div>

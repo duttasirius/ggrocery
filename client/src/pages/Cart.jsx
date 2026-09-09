@@ -1,27 +1,22 @@
 import { useEffect, useState } from "react";
+
 import { useAppContext } from "../context/AppContext";
-import { assets, dummyAddress } from "../assets/assets";
+
+import { assets } from "../assets/assets";
+
 import axios from "axios";
+
 import toast from "react-hot-toast";
 
 const Cart = () => {
   const {
     navigate,
     user,
-    setUser,
-    isSeller,
-    setIsSeller,
-    showUserLogin,
-    setShowUserLogin,
     products,
-    setProducts,
-    addToCart,
     removeFromCart,
-    updateCartItem,
+    updateCartItems,
     cartItems,
     setCartItems,
-    searchQuery,
-    setSearchQuery,
     getCartAmount,
     getCartCount,
   } = useAppContext();
@@ -32,10 +27,11 @@ const Cart = () => {
   const [selectAddress, setSelectAddress] = useState(null);
   const [paymentOption, setPaymentOption] = useState("COD");
 
+  // GET CART PRODUCTS
   const getCart = () => {
-    let tempArray = [];
+    const tempArray = [];
 
-    for (const key in cartItems) {
+    for (const key in cartItems || {}) {
       const product = products.find((item) => item._id === key);
 
       if (product) {
@@ -49,82 +45,111 @@ const Cart = () => {
     setCartArray(tempArray);
   };
 
+  // GET USER ADDRESS
   const getUserAddress = async () => {
     try {
       const { data } = await axios.get("/api/address/get");
 
       if (data.success) {
-        setAddress(data.address);
-        if (data.address.length > 0) {
+        setAddress(data.address || []);
+
+        if (data.address && data.address.length > 0) {
           setSelectAddress(data.address[0]);
+        } else {
+          setSelectAddress(null);
         }
       } else {
         toast.error(data.message);
       }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to fetch address",
+      );
     }
   };
 
+  // PLACE ORDER
   const placeOrder = async () => {
+    if (!user) {
+      return toast.error("Please login to place an order");
+    }
+
+    if (cartArray.length === 0) {
+      return toast.error("Your cart is empty");
+    }
+
     if (!selectAddress) {
       return toast.error("Please select a delivery address");
     }
 
     try {
-      if (paymentOption === "cod") {
-        // ✅ COD flow
+      const orderItems = cartArray.map((item) => ({
+        product: item._id,
+        quantity: item.quantity,
+      }));
+
+      // ✅ COD flow
+      if (paymentOption === "COD") {
         const { data } = await axios.post("/api/order/cod", {
-          items: cartArray.map((item) => ({
-            product: item._id,
-            quantity: item.quantity,
-          })),
+          items: orderItems,
           address: selectAddress._id,
         });
 
         if (data.success) {
           toast.success(data.message);
+
           setCartItems({});
+
           navigate("/my-orders");
         } else {
-          toast.error(data.message); // ✅ Fix 1: only one else per if
+          toast.error(data.message);
         }
       } else {
-        // ✅ Fix 2: Stripe flow moved to top-level condition, not inside COD handler
+        // ✅ Online payment flow
         const { data: stripeData } = await axios.post("/api/order/stripe", {
-          // ✅ Fix 3: renamed to avoid redeclaration
-          items: cartArray.map((item) => ({
-            product: item._id,
-            quantity: item.quantity,
-          })),
+          items: orderItems,
           address: selectAddress._id,
         });
 
         if (stripeData.success) {
-          window.location.replace(stripeData.url); // redirects to Stripe checkout
+          window.location.replace(stripeData.session_url);
         } else {
           toast.error(stripeData.message);
         }
-      } // ✅ Fix 4: properly closed all blocks
+      }
     } catch (error) {
-      toast.error(error.message);
+      toast.error(
+        error?.response?.data?.message ||
+          error?.message ||
+          "Failed to place order",
+      );
     }
   };
 
+  // UPDATE CART PRODUCTS
   useEffect(() => {
-    if (products.length > 0 && cartItems) {
+    if (products.length > 0) {
       getCart();
+    } else {
+      setCartArray([]);
     }
   }, [products, cartItems]);
 
+  // GET USER ADDRESS
   useEffect(() => {
     if (user) {
       getUserAddress();
+    } else {
+      setAddress([]);
+      setSelectAddress(null);
     }
   }, [user]);
 
-  return products.length > 0 && cartItems ? (
+  return products.length > 0 ? (
     <div className="flex flex-col md:flex-row mt-16 mb-16">
+      {/* CART */}
       <div className="flex-1 max-w-4xl">
         <h1 className="text-3xl font-medium mb-6">
           Shopping Cart{" "}
@@ -137,67 +162,88 @@ const Cart = () => {
           <p className="text-center">Action</p>
         </div>
 
-        {cartArray.map((product, index) => (
-          <div
-            key={index}
-            className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
-          >
+        {cartArray.length > 0 ? (
+          cartArray.map((product, index) => (
             <div
-              onClick={() => {
-                navigate(
-                  `/products/${product.category.toLowerCase()}/${product._id}`,
-                );
-                window.scrollTo(0, 0);
-              }}
-              className="flex items-center md:gap-6 gap-3"
+              key={product._id || index}
+              className="grid grid-cols-[2fr_1fr_1fr] text-gray-500 items-center text-sm md:text-base font-medium pt-3"
             >
-              <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
-                <img
-                  className="max-w-full h-full object-cover"
-                  src={product.image[0]}
-                  alt={product.name}
-                />
-              </div>
-              <div>
-                <p className="hidden md:block font-semibold">{product.name}</p>
-                <div className="font-normal text-gray-500/70">
-                  <p>
-                    Wright: <span>{product.weight || "N/A"}</span>
+              <div
+                onClick={() => {
+                  navigate(
+                    `/products/${product.category.toLowerCase()}/${product._id}`,
+                  );
+
+                  window.scrollTo(0, 0);
+                }}
+                className="flex items-center md:gap-6 gap-3"
+              >
+                <div className="cursor-pointer w-24 h-24 flex items-center justify-center border border-gray-300 rounded overflow-hidden">
+                  <img
+                    className="max-w-full h-full object-cover"
+                    src={product.image?.[0]}
+                    alt={product.name}
+                  />
+                </div>
+
+                <div>
+                  <p className="hidden md:block font-semibold">
+                    {product.name}
                   </p>
-                  <div className="flex items-center">
-                    <p>Qty:</p>
-                    <select
-                      onChange={(e) =>
-                        updateCartItem(product._id, Number(e.target.value))
-                      }
-                      value={cartItems[product._id]}
-                      className="outline-none"
-                    >
-                      {Array(
-                        cartItems[product._id] > 9 ? cartItems[product._id] : 9,
-                      )
-                        .fill("")
-                        .map((_, index) => (
-                          <option key={index} value={index + 1}>
-                            {index + 1}
-                          </option>
-                        ))}
-                    </select>
+
+                  <div className="font-normal text-gray-500/70">
+                    <p>
+                      Weight: <span>{product.weight || "N/A"}</span>
+                    </p>
+
+                    <div className="flex items-center">
+                      <p>Qty:</p>
+
+                      <select
+                        onChange={(e) =>
+                          updateCartItems(product._id, Number(e.target.value))
+                        }
+                        value={cartItems?.[product._id] || 1}
+                        className="outline-none"
+                      >
+                        {Array(
+                          cartItems?.[product._id] > 9
+                            ? cartItems[product._id]
+                            : 9,
+                        )
+                          .fill("")
+                          .map((_, index) => (
+                            <option key={index} value={index + 1}>
+                              {index + 1}
+                            </option>
+                          ))}
+                      </select>
+                    </div>
                   </div>
                 </div>
               </div>
+
+              <p className="text-center">
+                ${product.offerPrice * product.quantity}
+              </p>
+
+              <button
+                onClick={() => removeFromCart(product._id)}
+                className="cursor-pointer mx-auto"
+              >
+                <img
+                  src={assets.remove_icon}
+                  className="w-6 h-6"
+                  alt="Remove"
+                />
+              </button>
             </div>
-            <p className="text-center">
-              ${product.offerPrice * product.quantity}
-            </p>
-            <button
-              onClick={() => removeFromCart(product._id)}
-              className="cursor-pointer mx-auto"
-            >
-              <img src={assets.remove_icon} className="w-6 h-6" alt="" />
-            </button>
+          ))
+        ) : (
+          <div className="py-10 text-center text-gray-500">
+            Your cart is empty.
           </div>
-        ))}
+        )}
 
         <button
           onClick={() => navigate("/products")}
@@ -212,37 +258,42 @@ const Cart = () => {
         </button>
       </div>
 
+      {/* ORDER SUMMARY */}
       <div className="max-w-[460px] w-full bg-gray-100/40 p-5 max-md:mt-16 border border-gray-300/70">
         <h2 className="text-xl md:text-xl font-medium">Order Summary</h2>
+
         <hr className="border-gray-300 my-5" />
 
         <div className="mb-6">
           <p className="text-sm font-medium uppercase">Delivery Address</p>
+
           <div className="relative flex justify-between items-start mt-2">
             <p className="text-gray-500">
-              {" "}
               {selectAddress
-                ? `${selectAddress.street}  , ${selectAddress.city} , ${selectAddress.state} , ${selectAddress.country}`
+                ? `${selectAddress.street}, ${selectAddress.city}, ${selectAddress.state}, ${selectAddress.country}`
                 : "NO ADDRESS FOUND"}
             </p>
+
             <button
               onClick={() => setShowAddress(!showAddress)}
               className="text-indigo-500 hover:underline cursor-pointer"
             >
               Change
             </button>
+
             {showAddress && (
-              <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full">
-                {address.map((address, index) => (
+              <div className="absolute top-12 py-1 bg-white border border-gray-300 text-sm w-full z-10">
+                {address.map((addressItem, index) => (
                   <p
+                    key={addressItem._id || index}
                     onClick={() => {
-                      setSelectAddress(address);
+                      setSelectAddress(addressItem);
                       setShowAddress(false);
                     }}
-                    className="text-gray-500 p-2 hover:bg-gray-100"
+                    className="text-gray-500 p-2 hover:bg-gray-100 cursor-pointer"
                   >
-                    {address.city} {address.state} , {address.street} ,{" "}
-                    {address.country}
+                    {addressItem.city} {addressItem.state}, {addressItem.street}
+                    , {addressItem.country}
                   </p>
                 ))}
 
@@ -259,6 +310,7 @@ const Cart = () => {
           <p className="text-sm font-medium uppercase mt-6">Payment Method</p>
 
           <select
+            value={paymentOption}
             onChange={(e) => setPaymentOption(e.target.value)}
             className="w-full border border-gray-300 bg-white px-3 py-2 mt-2 outline-none"
           >
@@ -274,14 +326,17 @@ const Cart = () => {
             <span>Price</span>
             <span>${getCartAmount()}</span>
           </p>
+
           <p className="flex justify-between">
             <span>Shipping Fee</span>
             <span className="text-green-600">Free</span>
           </p>
+
           <p className="flex justify-between">
             <span>Tax (2%)</span>
             <span>${(getCartAmount() * 2) / 100}</span>
           </p>
+
           <p className="flex justify-between text-lg font-medium mt-3">
             <span>Total Amount:</span>
             <span>${getCartAmount() + (getCartAmount() * 2) / 100}</span>
@@ -290,9 +345,14 @@ const Cart = () => {
 
         <button
           onClick={placeOrder}
-          className="w-full py-3 mt-6 cursor-pointer bg-green-500 text-white font-medium hover:bg-green-600 transition"
+          disabled={cartArray.length === 0}
+          className={`w-full py-3 mt-6 text-white font-medium transition ${
+            cartArray.length === 0
+              ? "bg-gray-400 cursor-not-allowed"
+              : "bg-green-500 hover:bg-green-600 cursor-pointer"
+          }`}
         >
-          {paymentOption === "COD" ? "PLACE ORDER" : "PROCEED TO CHECKOUT "}
+          {paymentOption === "COD" ? "PLACE ORDER" : "PROCEED TO CHECKOUT"}
         </button>
       </div>
     </div>

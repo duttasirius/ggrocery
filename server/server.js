@@ -10,6 +10,7 @@ import productRouter from "./routes/productRoute.js";
 import cartRoute from "./routes/cartRoute.js";
 import addressRouter from "./routes/addressRoute.js";
 import orderRouter from "./routes/orderRoute.js";
+import newsLetterRouter from "./routes/newsLetterRoute.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
@@ -30,6 +31,7 @@ app.use("/api/product", productRouter);
 app.use("/api/cart", cartRoute);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
+app.use("/api/newsletter", newsLetterRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);

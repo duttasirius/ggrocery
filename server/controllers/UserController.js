@@ -1,6 +1,12 @@
 import User from "../models/User.js";
 import bcrypt from "bcryptjs";
 import jwt from "jsonwebtoken";
+import newsletterModel from "../models/newsletterModel.js";
+import {
+  NEWSLETTER_SUBSCRIPTION_TEMPLATE,
+  WELCOME_TEMPLATE,
+} from "../configs/emailTemplates.js";
+import transporter from "../configs/nodemailer.js";
 
 // REGISTER USER
 export const register = async (req, res) => {
@@ -34,6 +40,20 @@ export const register = async (req, res) => {
     const token = jwt.sign({ id: user._id }, process.env.JWT_SECRET);
 
     res.cookie("token", token);
+
+    // sending welcome mail
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: "WELCOME TO MY WEBSITE",
+      // text: `Welcome aboard! 🎉 Your account has been created successfully. Explore features, enjoy the experience, and thank you for joining us today with your email id:${email}.
+      html: WELCOME_TEMPLATE.replace("{{name}}", name)
+        .replace("{{email}}", user.email)
+        .replace("{{websiteUrl}}", process.env.CLIENT_URL),
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("EMAIL SENT");
 
     return res.json({
       success: true,
@@ -124,6 +144,86 @@ export const logout = async (req, res) => {
     res.json({
       success: false,
       message: error.message,
+    });
+  }
+};
+
+// subscribe newsletter
+
+export const subscribeNewsletter = async (req, res) => {
+  try {
+    const { email } = req.body;
+
+    // check empty
+    if (!email) {
+      return res.json({
+        success: false,
+        message: "Email required",
+      });
+    }
+
+    // check already exists
+    const existingUser = await newsletterModel.findOne({ email });
+
+    if (existingUser) {
+      return res.json({
+        success: false,
+        message: "Already subscribed",
+      });
+    }
+
+    // save email
+    const newSubscriber = new newsletterModel({
+      email,
+    });
+
+    await newSubscriber.save();
+
+    res.json({
+      success: true,
+      message: "Subscribed successfully",
+    });
+
+    // SENDING NEWSLETTER SUBSCRIBE CONFIRM MAIL
+
+    const mailOptions = {
+      from: process.env.SENDER_EMAIL,
+      to: email,
+      subject: "WELCOME TO MY WEBSITE",
+      // text: `Welcome aboard! 🎉 Your account has been created successfully. Explore features, enjoy the experience, and thank you for joining us today with your email id:${email}.
+      html: NEWSLETTER_SUBSCRIPTION_TEMPLATE.replace(
+        "{{email}}",
+        email,
+      ).replace("{{websiteUrl}}", process.env.CLIENT_URL),
+    };
+
+    await transporter.sendMail(mailOptions);
+    console.log("EMAIL SENT");
+  } catch (error) {
+    console.log(error);
+
+    res.json({
+      success: false,
+      message: "Server Error",
+    });
+  }
+};
+
+// getting user newsletter mail from admin
+export const getSubscribers = async (req, res) => {
+  try {
+    const subscribers = await newsletterModel.find({});
+
+    res.json({
+      success: true,
+      subscribers,
+    });
+  } catch (error) {
+    console.log(error);
+
+    res.json({
+      success: false,
+      message: "Error fetching subscribers",
     });
   }
 };

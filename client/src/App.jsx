@@ -18,6 +18,9 @@ import AddProduct from "./pages/seller/AddProduct";
 import ProductList from "./pages/seller/ProductList";
 import Order from "./pages/seller/Order";
 import Loading from "./components/Loading";
+import NewsletterAdmin from "./pages/seller/NewsLetterAdmin";
+import Contact from "./components/Contact";
+import AiProductSearch from "./components/AiProductSearch";
 
 const App = () => {
   const isSellerPath = useLocation().pathname.includes("seller");
@@ -40,6 +43,7 @@ const App = () => {
           <Route path="/add-address" element={<AddAddress />} />
           <Route path="/my-orders" element={<MyOrders />} />
           <Route path="/loader" element={<Loading />} />
+          <Route path="/contact" element={<Contact />} />
           <Route
             path="/seller"
             element={isSeller ? <SellerLayout /> : <SellerLogin />}
@@ -47,14 +51,16 @@ const App = () => {
             <Route index element={isSeller ? <AddProduct /> : null} />
             <Route path="product-list" element={<ProductList />} />
             <Route path="orders" element={<Order />} />
+            <Route path="newsletter" element={<NewsletterAdmin />} />
           </Route>
         </Routes>
       </div>
       {!isSellerPath && <Footer />}
+      {!isSellerPath && <AiProductSearch />}
     </div>
   );
 };
 
-//
+// 10 h 4 min
 
 export default App;

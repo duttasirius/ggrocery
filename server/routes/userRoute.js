@@ -4,6 +4,7 @@ import {
   login,
   logout,
   register,
+  subscribeNewsletter,
 } from "../controllers/UserController.js";
 import authUser from "../middlewares/authuser.js";
 
