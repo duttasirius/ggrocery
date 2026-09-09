@@ -15,13 +15,23 @@ const StarRating = ({ rating, interactive = false, onChange }) => (
         className={interactive ? "rounded p-1 transition hover:scale-110" : "p-0.5"}
         aria-label={interactive ? `Rate ${star} stars` : `${star} stars`}
       >
-        <Star size={interactive ? 25 : 16} className={star <= rating ? "fill-amber-400 text-amber-400" : "text-slate-200"} />
+        <Star
+          size={interactive ? 25 : 16}
+          className={star <= rating ? "fill-amber-400 text-amber-400" : "text-slate-200"}
+        />
       </button>
     ))}
   </div>
 );
 
-const ProductReviews = ({ productId }) => {
+const getReviewSummary = (reviews) => {
+  if (!reviews.length) return { average: 0, count: 0 };
+
+  const average = reviews.reduce((sum, review) => sum + review.rating, 0) / reviews.length;
+  return { average, count: reviews.length };
+};
+
+const ProductReviews = ({ productId, onSummaryChange }) => {
   const { axios, user, setShowUserLogin } = useAppContext();
   const [reviews, setReviews] = useState([]);
   const [myReview, setMyReview] = useState(null);
@@ -38,7 +48,9 @@ const ProductReviews = ({ productId }) => {
     try {
       setLoading(true);
       const { data } = await axios.get(`/api/reviews?productId=${productId}`);
-      if (data.success) setReviews(data.reviews || []);
+      const nextReviews = data.success ? data.reviews || [] : [];
+      setReviews(nextReviews);
+      onSummaryChange(getReviewSummary(nextReviews));
 
       if (user) {
         const mine = await axios.get(`/api/reviews/mine?productId=${productId}`);
@@ -82,6 +94,11 @@ const ProductReviews = ({ productId }) => {
     setShowForm(true);
   };
 
+  const updateReviewState = (nextReviews) => {
+    setReviews(nextReviews);
+    onSummaryChange(getReviewSummary(nextReviews));
+  };
+
   const submitReview = async (event) => {
     event.preventDefault();
     setError("");
@@ -104,10 +121,10 @@ const ProductReviews = ({ productId }) => {
       }
 
       setMyReview(data.review);
-      setReviews((current) =>
+      updateReviewState(
         editing
-          ? current.map((review) => (review._id === data.review._id ? data.review : review))
-          : [data.review, ...current],
+          ? reviews.map((review) => (review._id === data.review._id ? data.review : review))
+          : [data.review, ...reviews],
       );
       setShowForm(false);
       setNotice(editing ? "Your review was updated." : "Thanks for reviewing this product! 🎉");
@@ -128,7 +145,8 @@ const ProductReviews = ({ productId }) => {
     try {
       const { data } = await axios.delete("/api/reviews", { data: { productId } });
       if (data.success) {
-        setReviews((current) => current.filter((review) => review._id !== myReview?._id));
+        const nextReviews = reviews.filter((review) => review._id !== myReview?._id);
+        updateReviewState(nextReviews);
         setMyReview(null);
         setShowForm(false);
         setNotice("Your review was deleted.");
@@ -197,7 +215,7 @@ const ProductReviews = ({ productId }) => {
             <article key={review._id} className="rounded-2xl border border-slate-200 bg-white p-5 shadow-sm">
               <div className="flex items-center justify-between gap-3">
                 <StarRating rating={review.rating} />
-                <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600"><Check size={14} /> Verified customer</span>
+                <span className="inline-flex items-center gap-1 text-xs font-medium text-emerald-600"><Check size={14} /> Customer review</span>
               </div>
               <p className="mt-4 text-sm leading-6 text-slate-600">“{review.text}”</p>
               <div className="mt-4 border-t border-slate-100 pt-4 text-sm font-semibold text-slate-800">{review.name}</div>
@@ -219,6 +237,7 @@ const ProductDetails = () => {
   const { navigate, products, addToCart } = useAppContext();
   const [thumbnail, setThumbnail] = useState(null);
   const [relatedProducts, setRelatedProducts] = useState([]);
+  const [reviewSummary, setReviewSummary] = useState({ average: 0, count: 0 });
   const { id } = useParams();
   const product = products.find((item) => item._id === id);
 
@@ -252,14 +271,21 @@ const ProductDetails = () => {
 
         <div className="flex-1">
           <h1 className="text-2xl font-semibold md:text-3xl">{product.name}</h1>
-          <div className="mt-2 flex items-center gap-1">{Array(5).fill(null).map((_, i) => <img key={i} src={i < product.rating ? assets.star_icon : assets.star_dull_icon} className="w-4" alt="star" />)}<span className="ml-2 text-sm text-gray-500">Product rating</span></div>
+          <div className="mt-2 flex flex-wrap items-center gap-1">
+            <StarRating rating={Math.round(reviewSummary.average)} />
+            <span className="ml-2 text-sm font-medium text-gray-500">
+              {reviewSummary.count
+                ? `${reviewSummary.average.toFixed(1)} / 5 · ${reviewSummary.count} review${reviewSummary.count === 1 ? "" : "s"}`
+                : "No reviews yet"}
+            </span>
+          </div>
           <div className="mt-5"><p className="text-gray-400 line-through">₹{product.price}</p><p className="text-2xl font-bold text-green-400">₹{product.offerPrice}</p><span className="text-xs text-gray-500">(inclusive of all taxes)</span></div>
           <p className="mt-6 font-medium">About Product</p><p>{product.description}</p>
           <div className="mt-8 flex gap-4"><button onClick={() => addToCart(product._id)} className="flex-1 rounded bg-gray-100 py-3 transition hover:bg-gray-200">Add to Cart</button><button onClick={() => { addToCart(product._id); navigate("/cart"); }} className="flex-1 rounded bg-green-500 py-3 text-white transition hover:bg-green-600">Buy Now</button></div>
         </div>
       </div>
 
-      <ProductReviews productId={product._id} />
+      <ProductReviews productId={product._id} onSummaryChange={setReviewSummary} />
 
       <div className="mt-16">
         <h2 className="mb-6 text-xl font-semibold md:text-2xl">Related Products</h2>
