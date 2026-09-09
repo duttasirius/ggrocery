@@ -1,7 +1,7 @@
-# 🛒 GreenCart — AI-Powered Grocery E-Commerce Platform
+# 🛒 GreenCart — AI-Powered Multivendor Grocery E-Commerce Platform
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/bottom_banner_image.png" alt="GreenCart grocery banner" width="900" />
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/bottom_banner_image.png" alt="GreenCart grocery storefront" width="100%" />
 </p>
 
 <p align="center">
@@ -9,239 +9,400 @@
 </p>
 
 <p align="center">
-  <a href="https://github.com/duttasirius/ggrocery"><img src="https://img.shields.io/github/repo-size/duttasirius/ggrocery?style=for-the-badge" alt="Repo size" /></a>
-  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React" />
+  <a href="https://github.com/duttasirius/ggrocery"><img src="https://img.shields.io/github/repo-size/duttasirius/ggrocery?style=for-the-badge" alt="Repository size" /></a>
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React 19" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS 4" />
   <img src="https://img.shields.io/badge/Node.js-ESM-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
-  <img src="https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express 5" />
   <img src="https://img.shields.io/badge/MongoDB-Mongoose-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
-  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
   <img src="https://img.shields.io/badge/Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini AI" />
+  <img src="https://img.shields.io/badge/Stripe-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
+  <img src="https://img.shields.io/badge/Cloudinary-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white" alt="Cloudinary" />
 </p>
 
-## 📌 Project Overview
-
-**GreenCart** is a modern full-stack grocery e-commerce application designed around a real shopping workflow rather than a static product catalogue.
-
-The application includes customer authentication, product discovery, AI-assisted search, cart management, address management, checkout and payments, order tracking, product reviews, seller/admin workflows, cloud image uploads, promotional content and responsive UI.
-
-One of the main technical highlights is the **AI Product Search** experience: shoppers can describe what they want in natural language — such as `healthy breakfast`, `fresh fruit`, `dairy products`, or a misspelled product name — and the backend combines **Gemini-based intent understanding** with a deterministic catalogue-matching fallback so search remains useful even when the AI service is unavailable.
+<p align="center">
+  <strong>🛍️ Multivendor Commerce</strong> &nbsp; • &nbsp;
+  <strong>🤖 AI Discovery</strong> &nbsp; • &nbsp;
+  <strong>🔐 Secure Authentication</strong> &nbsp; • &nbsp;
+  <strong>💳 Online Payments</strong> &nbsp; • &nbsp;
+  <strong>⭐ Product Reviews</strong>
+</p>
 
 ---
 
-## ✨ Highlights
+## 📌 What is GreenCart?
 
-### 🤖 AI Product Search
+**GreenCart** is a full-stack, portfolio-grade grocery e-commerce platform built to model a real online shopping experience from product discovery through checkout and order management.
 
-GreenCart includes an AI-assisted shopping experience available directly inside the storefront.
+It combines a modern React storefront with an Express REST API, MongoDB data models, Cloudinary media storage, Stripe payments, seller workflows and a **Gemini-powered AI shopping assistant**.
 
-- Natural-language product discovery
-- Gemini-powered product intent understanding
-- Exact product-name matching
-- Partial product-name matching
-- Category-aware matching
-- Search synonym expansion
-- Simple typo tolerance
-- Ingredient and use-case aware queries through the AI prompt
-- Results restricted to real products from MongoDB
-- Maximum result selection for focused recommendations
-- Deterministic catalogue fallback when Gemini is unavailable
-- Graceful degradation when the AI service fails
-- Add recommended products to cart directly from the AI interface
-- Open the recommended product directly from the AI result
-
-The backend never blindly trusts product IDs returned by the model. AI-selected IDs are checked against the actual MongoDB catalogue before being returned to the client.
-
-**Example queries:**
+The project is intentionally more than a product catalogue. It covers the complete commerce lifecycle:
 
 ```text
-"healthy breakfast"
-"fresh fruit"
-"dairy products"
-"something for breakfast under a budget"
-"show me brown rice"
-"amol milk"   ← simple typo tolerance can still help find the correct catalogue item
+Discover → Search → Product Details → Review → Cart → Address → Payment → Order → Seller Fulfillment
 ```
 
-Implementation: `server/controllers/aiSearchController.js` and `client/src/components/AiProductSearch.jsx`.
+The standout feature is **AI Product Search**. Instead of requiring customers to know the exact product name, they can describe what they need naturally — for example, `healthy breakfast`, `fresh fruit`, `dairy products`, or a slightly misspelled product name. The backend combines Gemini intent understanding with deterministic catalogue matching so the feature remains useful even when the external AI service is unavailable.
 
 ---
 
-### 🛍️ Customer Shopping Experience
+# 🚀 Project Highlights
 
-- Responsive grocery storefront
-- Product catalogue browsing
-- Category-based product pages
+## 🤖 01 — AI Grocery Shopping Assistant
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/ai-assistant-preview.svg" alt="GreenCart AI shopping assistant" width="900" />
+</p>
+
+GreenCart includes an interactive AI shopping assistant directly inside the storefront.
+
+### What shoppers can do
+
+- Search using natural language
+- Search by product name
+- Search by category
+- Search using common grocery synonyms
+- Search using use cases such as breakfast or snacks
+- Search using dietary-style concepts such as healthy food
+- Recover from simple product-name typos
+- Open recommended products directly
+- Add AI-recommended products directly to the cart
+
+### Example queries
+
+```text
+healthy breakfast
+fresh fruit
+dairy products
+something for breakfast
+show me brown rice
+vegetables for dinner
+amul milk
+amol milk
+```
+
+### Why this implementation is interesting
+
+The AI layer is **not treated as the database**.
+
+The backend first loads real, in-stock products from MongoDB. Gemini receives a controlled catalogue and is instructed to return catalogue IDs only. Those IDs are then validated against the actual MongoDB product map before anything is returned to the frontend.
+
+This creates a safer architecture:
+
+```text
+Customer Query
+      ↓
+Normalize + tokenize
+      ↓
+Deterministic catalogue matching
+      ↓
+Gemini intent understanding
+      ↓
+Validate returned product IDs
+      ↓
+Merge AI + deterministic results
+      ↓
+Return real products
+      ↓
+Customer can add to cart
+```
+
+### AI reliability strategy
+
+The application also has a deterministic fallback. If Gemini is unavailable, times out, returns malformed data, or does not find a useful result, the backend can still return catalogue matches.
+
+This is an important e-commerce design decision: **AI enhances product discovery without becoming a single point of failure for shopping.**
+
+Implementation:
+
+- `client/src/components/AiProductSearch.jsx`
+- `server/controllers/aiSearchController.js`
+
+---
+
+## 🛍️ 02 — Full E-Commerce Shopping Experience
+
+GreenCart supports the major customer-side workflows expected from a modern online grocery store.
+
+### Product discovery
+
+- Homepage storefront
+- Grocery categories
+- Product catalogue
+- Best-selling products
+- Product offers
 - Product details pages
-- Product image gallery with multiple views
+- Multiple product images
 - Stock-aware product display
-- Offer price and original price presentation
-- Related-product recommendations by category
+- Related products
+- AI-assisted product discovery
+
+### Shopping
+
 - Add to cart
+- Quantity updates
+- Cart persistence for authenticated users
 - Buy Now flow
-- Cart quantity management
-- Address management
-- Order placement
-- Order history
-- Responsive navigation for desktop and smaller screens
+- Cart totals
+- Delivery address selection
+- Saved addresses
+- Checkout
+
+### Orders
+
+- Cash on Delivery
+- Stripe checkout
+- Stripe payment verification
+- User order history
+- Seller order visibility
 
 ---
 
-### ⭐ Product-Specific Reviews & Ratings
+## 🏪 03 — Multivendor / Seller Architecture
 
-Reviews are tied to the **individual product**, rather than being one global testimonial list.
+GreenCart is structured around separate customer and seller responsibilities rather than treating the application as a simple single-user store.
+
+### Seller capabilities
+
+- Dedicated seller authentication middleware
+- Seller routes
+- Product creation
+- Product catalogue management
+- Product pricing
+- Offer pricing
+- Stock management
+- Product image uploads
+- Seller-side order access
+- Multi-image product support
+
+The current seller product workflow is designed around **four product images**, allowing product detail pages to present a richer gallery.
+
+### Commerce role separation
+
+```text
+                    GreenCart
+                       │
+          ┌────────────┴────────────┐
+          │                         │
+      Customer                    Seller
+          │                         │
+   Browse products            Manage products
+   AI search                  Upload images
+   Cart                       Manage pricing
+   Checkout                   Manage stock
+   Reviews                    View orders
+   Orders
+```
+
+This separation provides a foundation for expanding the platform into a larger multi-seller marketplace.
+
+---
+
+## ⭐ 04 — Product-Specific Reviews & Ratings
+
+Reviews are attached to the **specific product being viewed**, rather than being only a generic homepage testimonial section.
 
 Customers can:
 
 - View reviews for the current product
-- See average rating and total review count
+- See review count
+- See average rating
 - Give a 1–5 star rating
-- Submit a written review
+- Submit written feedback
 - Edit their own review
 - Delete their own review
-- See the rating summary directly above the product price
+- Review different products independently
 
-The review model uses a compound uniqueness rule so one authenticated customer can maintain one review per product while still being able to review multiple products.
+The review data model uses a compound user + product uniqueness rule so one customer can review many products while maintaining one review per product.
 
-For development/demo data, the project also includes a review seeding utility that creates **2–8 sample reviews per product**.
+### Demo review data
+
+The repository includes a seeding utility that can populate products with **2–8 sample reviews** for development and presentation purposes.
 
 ```bash
 cd server
 npm run seed:reviews
 ```
 
-> Seeded reviews are sample/demo records and should not be presented as verified real customer purchases in a production dataset.
+> These seeded records are demo/sample data and should not be represented as verified real customer purchases in a production environment.
 
 ---
 
-### 🔐 Authentication & User Accounts
+## 🔐 05 — Authentication & Protected Resources
 
-- User registration
-- User login
-- Password hashing with bcrypt
-- JWT-based authentication
-- HTTP-only authentication cookie flow
-- Authenticated user detection
-- Protected user routes
-- Protected review creation/update/delete
-- Protected cart and order operations
+The platform includes authentication for both customer and seller workflows.
 
-Authentication middleware validates the JWT and exposes the authenticated user ID to protected controllers.
+### Customer authentication
 
----
+- Registration
+- Login
+- Password hashing
+- JWT authentication
+- Cookie-based session flow
+- Authenticated-user detection
+- Protected routes
 
-### 🛒 Cart & Checkout
+### Protected customer operations
 
-- Persistent user cart
-- Add products from the storefront
-- Add products directly from AI recommendations
-- Cart count in navigation
-- Address selection/management
-- Cash on Delivery checkout
-- Stripe payment flow
-- Stripe payment verification
-- User-specific order history
-- Seller-side order access
+- Cart operations
+- Orders
+- Addresses
+- Review creation
+- Review editing
+- Review deletion
 
-Order routes include dedicated endpoints for COD, Stripe checkout and Stripe verification.
+### Seller authentication
+
+Seller-specific middleware protects seller operations separately from normal customer routes.
+
+This provides a clear authorization boundary between shopper and seller functionality.
 
 ---
 
-### 👨‍💼 Seller / Admin Workflow
+## 💳 06 — Payments & Checkout
 
-The backend contains a separate seller authentication layer and seller routes for catalogue and order management.
+GreenCart supports two checkout paths:
 
-Features include:
+### Cash on Delivery
 
-- Seller authentication
-- Product creation
-- Product image uploads
-- Product stock information
-- Offer pricing
-- Product catalogue management
-- Seller order access
-- Multiple-image product support
+A dedicated authenticated backend route handles COD order creation.
 
-The current seller product workflow is configured around **four product images**, giving product detail pages a richer visual gallery.
+### Stripe
 
----
+The application includes:
 
-### ☁️ Cloud Image Uploads
+- Stripe checkout creation
+- Authenticated payment flow
+- Payment verification endpoint
+- Order creation after payment handling
 
-Product media is integrated with **Cloudinary** rather than being stored directly on the application server.
-
-This supports:
-
-- Cloud-hosted product media
-- Multiple product images
-- Cleaner deployment architecture
-- Smaller application-server storage requirements
+The backend exposes dedicated order endpoints for COD, Stripe checkout and Stripe verification.
 
 ---
 
-### 📱 Responsive UI
+## ☁️ 07 — Cloudinary Product Media
 
-The frontend is built with React and Tailwind CSS and is designed to adapt across:
+Product images are uploaded through **Cloudinary** rather than being stored directly inside the application server.
+
+Benefits include:
+
+- Cloud-hosted product images
+- Multiple images per product
+- Cleaner application-server responsibilities
+- CDN-friendly media URLs
+- Easier deployment architecture
+
+Product image URLs are stored with product data and consumed by the React storefront.
+
+---
+
+## 📱 08 — Responsive Modern UI
+
+The frontend uses React and Tailwind CSS to provide a responsive shopping experience across:
 
 - Desktop
 - Laptop
 - Tablet
 - Mobile
 
-Interactive UI elements use Lucide icons and include loading, empty and error states throughout important user flows.
+The UI includes:
+
+- Responsive navigation
+- Mobile-friendly layouts
+- Interactive product cards
+- Loading states
+- Empty states
+- Error states
+- Toast notifications
+- Lucide icons
+- AI assistant floating interface
+- Product image galleries
 
 ---
 
-## 🖼️ Product Experience Preview
+# 🖼️ Visual Showcase
+
+## Main Storefront
 
 <p align="center">
-  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/apple_image.png" alt="Grocery product visual" width="220" />
-  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/amul_milk_image.png" alt="Dairy product visual" width="220" />
-  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/bakery_image.png" alt="Bakery category visual" width="220" />
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/bottom_banner_image.png" alt="GreenCart main grocery storefront banner" width="900" />
 </p>
 
-The repository contains a broader grocery image catalogue for fruits, vegetables, dairy, bakery, grains, drinks and other store content.
+## AI Shopping Assistant
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/ai-assistant-preview.svg" alt="GreenCart AI product discovery assistant" width="900" />
+</p>
+
+## Grocery Product Catalogue
+
+<p align="center">
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/apple_image.png" alt="Apple product" width="190" />
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/amul_milk_image.png" alt="Amul milk product" width="190" />
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/bakery_image.png" alt="Bakery category" width="190" />
+  <img src="https://raw.githubusercontent.com/duttasirius/ggrocery/dev/client/src/assets/brown_rice_image.png" alt="Brown rice product" width="190" />
+</p>
+
+The repository includes a broader grocery visual catalogue covering fruits, vegetables, dairy, bakery, grains, drinks and other store categories.
 
 ---
 
-## 🧠 How the AI Search Works
+# 🧠 AI Product Search — Technical Deep Dive
 
-The search system is intentionally designed as a **hybrid retrieval pipeline** instead of sending every query directly to an LLM.
+The AI search implementation uses a **hybrid retrieval architecture** rather than relying entirely on an LLM.
 
-### 1. Query normalization
+## Step 1 — Input validation
 
-The backend normalizes the shopper's query by lowercasing text, removing unnecessary punctuation and splitting it into meaningful tokens.
+The backend validates the incoming search query and rejects empty or excessively long requests.
 
-### 2. Search-term expansion
+## Step 2 — Query normalization
 
-Common shopping concepts are expanded through a synonym map.
+The search engine:
 
-For example:
+- Converts text to lowercase
+- Removes unnecessary punctuation
+- Normalizes whitespace
+- Tokenizes meaningful words
+- Removes common stop words
+
+## Step 3 — Grocery synonym expansion
+
+The backend maintains grocery-oriented search synonyms.
+
+Examples:
 
 ```text
 fruit       → apple, orange, banana, mango, grapes
 vegetable   → potato, tomato, carrot, spinach, onion
 dairy       → milk, paneer, cheese, eggs
+bread       → bakery, brown bread, whole bread, croissant
+rice        → grains, basmati rice, brown rice
 breakfast   → bread, eggs, milk, oats, croissant, muffins
 healthy     → organic, quinoa, spinach, oats, brown rice, fruits
 ```
 
-### 3. Deterministic catalogue matching
+This allows ordinary catalogue matching to understand common shopping language.
 
-The backend scores products using signals such as:
+## Step 4 — Deterministic scoring
 
-- Exact product-name matches
-- Partial product-name matches
-- Product-name token matches
-- Category matches
-- Description matches
-- Expanded synonym matches
-- Simple typo tolerance
+Products are scored using multiple signals:
 
-This provides a reliable non-AI search layer.
+| Signal | Purpose |
+|---|---|
+| Exact product name | Highest-confidence match |
+| Partial product name | Handles incomplete queries |
+| Product-name token | Handles natural phrases |
+| Category | Matches broader shopping intent |
+| Description | Finds contextual matches |
+| Synonym expansion | Understands common grocery language |
+| Simple typo tolerance | Helps with small spelling mistakes |
 
-### 4. Gemini intent understanding
+## Step 5 — Gemini intent understanding
 
-When `GEMINI_API_KEY` is configured, the backend sends the real product catalogue to Gemini and asks it to return a strict JSON response containing:
+When `GEMINI_API_KEY` is available, Gemini receives a controlled catalogue containing product IDs, names, categories, descriptions and prices.
+
+The model is instructed to return strict JSON:
 
 ```json
 {
@@ -250,122 +411,173 @@ When `GEMINI_API_KEY` is configured, the backend sends the real product catalogu
 }
 ```
 
-The model is explicitly instructed to use only catalogue IDs and return at most six products.
+Only products from the catalogue may be selected.
 
-### 5. Output validation
+## Step 6 — Server-side validation
 
-Returned product IDs are checked against products loaded from MongoDB before the client receives them.
+Gemini output is treated as untrusted model output.
 
-### 6. Hybrid merge
+The backend builds a MongoDB product map and validates every requested ID against it.
 
-Gemini results are merged with deterministic keyword matches. This means an obvious catalogue match can still be returned even when the model misses it.
+```text
+Gemini ID
+   ↓
+Exists in MongoDB?
+   ├── Yes → accept
+   └── No  → discard
+```
 
-### 7. Failure fallback
+## Step 7 — Hybrid result merge
 
-If Gemini times out or returns invalid data, the application falls back to deterministic catalogue search instead of breaking the shopping experience.
+Gemini-selected products are combined with deterministic catalogue matches, with duplicate IDs removed and the result set limited.
 
-This architecture makes the feature both more useful to shoppers and easier to reason about from a backend engineering perspective.
+## Step 8 — Failure fallback
+
+If Gemini fails, the API still attempts deterministic catalogue search.
+
+The result is a shopping assistant that has both:
+
+**AI flexibility + deterministic reliability.**
 
 ---
 
-## 🏗️ System Architecture
+# 🏗️ System Architecture
 
 ```text
-                         ┌──────────────────────┐
-                         │      React + Vite     │
-                         │    Tailwind CSS UI    │
-                         └──────────┬───────────┘
-                                    │ Axios / HTTP
-                                    ▼
-                         ┌──────────────────────┐
-                         │   Express REST API    │
-                         │  Authentication +    │
-                         │  Business Logic      │
-                         └──────┬───────┬───────┘
-                                │       │
-                 ┌──────────────┘       └───────────────┐
-                 ▼                                      ▼
-        ┌─────────────────┐                    ┌─────────────────┐
-        │    MongoDB      │                    │    Cloudinary   │
-        │ Products/Users  │                    │ Product Images  │
-        │ Orders/Reviews  │                    └─────────────────┘
-        └─────────────────┘
-                 ▲
-                 │
-                 │
-        ┌────────┴─────────┐
-        │  Gemini AI API   │
-        │ Natural-language │
-        │ product search   │
-        └──────────────────┘
+                           CUSTOMER
+                              │
+                              ▼
+                 ┌────────────────────────┐
+                 │     React + Vite       │
+                 │    Tailwind CSS UI     │
+                 └───────────┬────────────┘
+                             │
+                       Axios / HTTP
+                             │
+                             ▼
+                 ┌────────────────────────┐
+                 │      Express API       │
+                 │ Authentication        │
+                 │ Commerce Logic        │
+                 │ Product Search        │
+                 │ Orders / Reviews      │
+                 └───────┬───────┬────────┘
+                         │       │
+             ┌───────────┘       └─────────────┐
+             ▼                                 ▼
+      ┌──────────────┐                  ┌──────────────┐
+      │   MongoDB    │                  │  Cloudinary  │
+      │ Users        │                  │ Product      │
+      │ Products     │                  │ Images       │
+      │ Cart         │                  └──────────────┘
+      │ Orders       │
+      │ Reviews      │
+      └──────┬───────┘
+             │
+             │ catalogue context
+             ▼
+      ┌──────────────┐
+      │  Gemini AI   │
+      │ Intent       │
+      │ Understanding│
+      └──────────────┘
 
-        Stripe <── Payment checkout / verification ──> Express API
+      Stripe ◄──── Checkout / Verification ────► Express API
+
+      Seller ──────► Seller Auth / Product / Order APIs
 ```
 
 ---
 
-## 🧰 Tech Stack
+# 🧰 Technology Stack
 
-### Frontend
+## Frontend Stack
 
-| Technology | Purpose |
+<p align="center">
+  <img src="https://img.shields.io/badge/React-19-61DAFB?style=for-the-badge&logo=react&logoColor=white" alt="React" />
+  <img src="https://img.shields.io/badge/Vite-8-646CFF?style=for-the-badge&logo=vite&logoColor=white" alt="Vite" />
+  <img src="https://img.shields.io/badge/Tailwind_CSS-4-06B6D4?style=for-the-badge&logo=tailwindcss&logoColor=white" alt="Tailwind CSS" />
+  <img src="https://img.shields.io/badge/Axios-HTTP-5A29E4?style=for-the-badge&logo=axios&logoColor=white" alt="Axios" />
+  <img src="https://img.shields.io/badge/React_Router-7-CA4245?style=for-the-badge&logo=reactrouter&logoColor=white" alt="React Router" />
+  <img src="https://img.shields.io/badge/Lucide-Icons-F56565?style=for-the-badge" alt="Lucide" />
+</p>
+
+| Technology | Role in GreenCart |
 |---|---|
-| React 19 | Component-based UI |
-| Vite | Frontend development/build tooling |
-| React Router | Client-side routing |
-| Tailwind CSS 4 | Responsive styling |
-| Axios | API communication |
-| Lucide React | UI icons |
-| React Hot Toast | User feedback / notifications |
+| **React 19** | Component-based storefront and customer UI |
+| **Vite** | Fast frontend development and production builds |
+| **Tailwind CSS 4** | Responsive utility-first styling |
+| **React Router 7** | Client-side page and product routing |
+| **Axios** | Frontend-to-backend API communication |
+| **Lucide React** | Interface icons and interaction visuals |
+| **React Hot Toast** | Lightweight user feedback and notifications |
 
-The frontend dependencies and build scripts are defined in `client/package.json`.
+## Backend Stack
 
-### Backend
+<p align="center">
+  <img src="https://img.shields.io/badge/Node.js-ESM-339933?style=for-the-badge&logo=node.js&logoColor=white" alt="Node.js" />
+  <img src="https://img.shields.io/badge/Express-5-000000?style=for-the-badge&logo=express&logoColor=white" alt="Express" />
+  <img src="https://img.shields.io/badge/MongoDB-Database-47A248?style=for-the-badge&logo=mongodb&logoColor=white" alt="MongoDB" />
+  <img src="https://img.shields.io/badge/Mongoose-ODM-880000?style=for-the-badge&logo=mongoose&logoColor=white" alt="Mongoose" />
+  <img src="https://img.shields.io/badge/JWT-Auth-000000?style=for-the-badge&logo=jsonwebtokens&logoColor=white" alt="JWT" />
+</p>
 
-| Technology | Purpose |
+| Technology | Role in GreenCart |
 |---|---|
-| Node.js | Server runtime |
-| Express 5 | REST API framework |
-| MongoDB | Primary database |
-| Mongoose | MongoDB object modelling |
-| JWT | Authentication |
-| bcryptjs | Password hashing |
-| Cookie Parser | Authentication cookie handling |
-| CORS | Cross-origin API access |
-| Multer | Multipart image uploads |
-| Cloudinary | Media storage |
-| Stripe | Online payments |
-| Nodemailer | Email-related backend capability |
-| Google Gemini | AI product discovery |
+| **Node.js** | Backend JavaScript runtime |
+| **Express 5** | REST API and server routing |
+| **MongoDB** | Persistent application database |
+| **Mongoose** | Data modelling and MongoDB access |
+| **JWT** | Customer and seller authentication |
+| **bcryptjs** | Password hashing |
+| **Cookie Parser** | Authentication cookie parsing |
+| **CORS** | Controlled frontend/API cross-origin communication |
+| **Multer** | Multipart product image uploads |
+
+## Commerce & Infrastructure
+
+<p align="center">
+  <img src="https://img.shields.io/badge/Stripe-Payments-635BFF?style=for-the-badge&logo=stripe&logoColor=white" alt="Stripe" />
+  <img src="https://img.shields.io/badge/Cloudinary-Media-3448C5?style=for-the-badge&logo=cloudinary&logoColor=white" alt="Cloudinary" />
+  <img src="https://img.shields.io/badge/Gemini-AI-4285F4?style=for-the-badge&logo=google&logoColor=white" alt="Gemini" />
+  <img src="https://img.shields.io/badge/Nodemailer-Email-22A2F2?style=for-the-badge&logo=minutemailer&logoColor=white" alt="Nodemailer" />
+</p>
+
+| Technology | Role in GreenCart |
+|---|---|
+| **Stripe** | Online payment processing and verification |
+| **Cloudinary** | Product image/media storage |
+| **Google Gemini** | Natural-language product discovery |
+| **Nodemailer** | Backend email-related functionality |
 
 ---
 
-## 📁 Project Structure
+# 📁 Project Structure
 
 ```text
 ggrocery/
-├── client/
-│   ├── src/
-│   │   ├── assets/
-│   │   ├── components/
-│   │   │   ├── AiProductSearch.jsx
-│   │   │   ├── BestSeller.jsx
-│   │   │   ├── Categories.jsx
-│   │   │   ├── Footer.jsx
-│   │   │   ├── MainBanner.jsx
-│   │   │   ├── Navbar.jsx
-│   │   │   ├── OurPartners.jsx
-│   │   │   ├── ProductCard.jsx
-│   │   │   └── ...
-│   │   ├── context/
-│   │   │   └── AppContext.jsx
-│   │   ├── pages/
-│   │   │   ├── ProductDetails.jsx
-│   │   │   └── ...
-│   │   └── App.jsx
-│   └── package.json
 │
-├── server/
+├── client/                         # React + Vite storefront
+│   ├── public/
+│   └── src/
+│       ├── assets/                 # Grocery images and UI assets
+│       ├── components/             # Reusable storefront components
+│       │   ├── AiProductSearch.jsx
+│       │   ├── BestSeller.jsx
+│       │   ├── Categories.jsx
+│       │   ├── MainBanner.jsx
+│       │   ├── Navbar.jsx
+│       │   ├── OurPartners.jsx
+│       │   ├── ProductCard.jsx
+│       │   └── ...
+│       ├── context/
+│       │   └── AppContext.jsx       # Shared application state/API client
+│       ├── pages/
+│       │   ├── ProductDetails.jsx
+│       │   └── ...
+│       └── App.jsx
+│
+├── server/                         # Express + MongoDB backend
 │   ├── configs/
 │   │   ├── cloudinary.js
 │   │   └── db.js
@@ -374,7 +586,8 @@ ggrocery/
 │   │   ├── UserController.js
 │   │   ├── productController.js
 │   │   ├── reviewController.js
-│   │   └── orderController.js
+│   │   ├── orderController.js
+│   │   └── ...
 │   ├── middlewares/
 │   │   ├── authuser.js
 │   │   └── authSeller.js
@@ -401,20 +614,20 @@ ggrocery/
 
 ---
 
-## 🔌 Main API Areas
+# 🔌 REST API Overview
 
-| Base Route | Responsibility |
+| Base Route | Purpose |
 |---|---|
-| `/api/user` | Registration, login and authentication |
-| `/api/seller` | Seller authentication / seller operations |
-| `/api/product` | Product catalogue and AI product search |
-| `/api/cart` | User cart operations |
-| `/api/address` | Saved delivery addresses |
+| `/api/user` | Customer registration, login and authentication |
+| `/api/seller` | Seller authentication and seller operations |
+| `/api/product` | Product catalogue and AI search |
+| `/api/cart` | Customer cart operations |
+| `/api/address` | Delivery address management |
 | `/api/order` | COD, Stripe and order history |
 | `/api/newsletter` | Newsletter functionality |
-| `/api/reviews` | Product ratings and customer reviews |
+| `/api/reviews` | Product-specific reviews and ratings |
 
-### AI search endpoint
+## AI Search
 
 ```http
 POST /api/product/ai-search
@@ -425,7 +638,7 @@ Content-Type: application/json
 }
 ```
 
-### Product reviews
+## Reviews
 
 ```http
 GET    /api/reviews?productId=<productId>
@@ -435,7 +648,7 @@ PUT    /api/reviews
 DELETE /api/reviews
 ```
 
-### Orders
+## Orders
 
 ```http
 POST /api/order/cod
@@ -447,42 +660,35 @@ GET  /api/order/seller
 
 ---
 
-## ⚙️ Local Development Setup
+# ⚙️ Local Development Setup
 
-### 1. Clone the repository
+## 1. Clone the repository
 
 ```bash
 git clone https://github.com/duttasirius/ggrocery.git
 cd ggrocery
-```
-
-The active development branch is `dev`.
-
-```bash
 git checkout dev
 ```
 
-### 2. Install frontend dependencies
+## 2. Install frontend dependencies
 
 ```bash
 cd client
 npm install
 ```
 
-### 3. Install backend dependencies
+## 3. Install backend dependencies
 
-Open another terminal:
+In another terminal:
 
 ```bash
 cd server
 npm install
 ```
 
-### 4. Configure environment variables
+## 4. Configure backend environment variables
 
-Create `server/.env` with the values required by your local environment.
-
-Typical values include:
+Create `server/.env`:
 
 ```env
 PORT=4000
@@ -498,59 +704,59 @@ GEMINI_API_KEY=your_gemini_api_key
 GEMINI_MODEL=gemini-2.5-flash
 ```
 
-Create the frontend environment file as needed:
+Create the frontend environment file as required:
 
 ```env
 VITE_BACKEND_URL=http://localhost:4000
 ```
 
-> Never commit real API keys, passwords, database credentials or secrets to GitHub.
+> Never commit real credentials, API keys or database secrets.
 
-### 5. Start the backend
+## 5. Start the backend
 
 ```bash
 cd server
 npm run server
 ```
 
-### 6. Start the frontend
+## 6. Start the frontend
 
 ```bash
 cd client
 npm run dev
 ```
 
-Vite will provide the local development URL in the terminal.
+Vite will display the local frontend URL in the terminal.
 
 ---
 
-## 🌱 Demo Review Seeding
+# 🌱 Demo Review Seeding
 
-To populate the catalogue with sample product reviews:
+Populate the product catalogue with sample reviews:
 
 ```bash
 cd server
 npm run seed:reviews
 ```
 
-The utility checks existing review counts product-by-product and generates between two and eight sample reviews for products that need them.
+The utility checks products individually and creates between **2 and 8 sample reviews per product** where the existing review count needs to be populated.
 
-This is useful for demonstrating the review UI during development and for screenshots/demo presentations.
+This is intended for local development, UI demos and portfolio screenshots.
 
 ---
 
-## 🧪 Useful Development Commands
+# 🧪 Development Commands
 
-### Frontend
+## Frontend
 
 ```bash
 npm run dev       # Start Vite development server
-npm run build     # Create production build
-npm run lint      # Run ESLint
-npm run preview   # Preview the production build
+npm run build     # Production build
+npm run lint      # ESLint
+npm run preview   # Preview production build
 ```
 
-### Backend
+## Backend
 
 ```bash
 npm run server        # Start backend with nodemon
@@ -560,104 +766,129 @@ npm run seed:reviews  # Seed sample product reviews
 
 ---
 
-## 🔒 Security & Reliability Considerations
+# 🔒 Security & Reliability
 
-The project includes several practical safeguards that are useful in a real e-commerce codebase:
+GreenCart includes several practical safeguards expected in a real commerce backend.
 
 - Passwords are hashed rather than stored as plain text.
-- Authentication is handled through JWTs.
-- Protected routes use middleware before accessing user-owned resources.
-- Product review operations are associated with authenticated users.
+- JWT authentication protects customer resources.
+- Seller resources use separate authentication middleware.
+- Review operations are associated with authenticated users.
 - Review uniqueness is scoped to user + product.
-- AI product IDs are validated against the MongoDB catalogue.
-- AI service failures fall back to catalogue search rather than returning an unusable shopping experience.
 - Search requests are length-limited.
-- Product search only starts from products that are currently in stock.
-- Images are uploaded through a dedicated media service.
+- Product search begins with products currently in stock.
+- Gemini-generated product IDs are validated against MongoDB.
+- AI failures fall back to deterministic catalogue matching.
+- Product media is handled by a dedicated cloud media service.
+- Environment variables are used for sensitive configuration.
 
 ---
 
-## 🎯 Engineering Decisions Worth Discussing in an Interview
+# 🎯 Engineering Decisions
 
-### Why a hybrid AI search instead of LLM-only search?
+## Why hybrid AI search?
 
-An LLM is good at understanding intent, but an e-commerce application still needs deterministic control over what can actually be purchased. GreenCart therefore keeps a local matching system as a reliable retrieval layer and uses Gemini as an intent-understanding layer.
+LLMs are strong at understanding natural language, but an e-commerce system needs deterministic control over purchasable entities.
 
-### Why validate model-generated product IDs?
+GreenCart therefore separates:
 
-An AI model should not be treated as the source of truth for database entities. MongoDB remains the authority, so every returned ID is checked against the actual product map before it reaches the frontend.
+```text
+Intent understanding  → Gemini
+Product truth         → MongoDB
+Deterministic search  → Backend matcher
+```
 
-### Why product-specific reviews?
+This prevents the AI model from becoming the authority for product IDs.
 
-Global testimonials are useful for marketing, but shoppers need evidence about the product currently being viewed. Reviews are therefore associated with both the authenticated user and the product.
+## Why validate AI-generated IDs?
 
-### Why Cloudinary?
+AI output is treated as untrusted data. The backend only returns products whose IDs exist in the real catalogue.
 
-Product media is a separate concern from application data. Storing images in Cloudinary keeps the Express server focused on application logic while providing URLs that can be stored in MongoDB.
+## Why keep a fallback search?
 
-### Why keep a deterministic fallback?
+Search is a core shopping function. A temporary Gemini outage should not turn product discovery into a broken feature.
 
-External AI services can fail, timeout or be temporarily unavailable. Product search is a core shopping capability, so the application should continue to return useful catalogue matches even when the AI layer is unavailable.
+## Why product-specific reviews?
 
----
+A generic testimonial section helps marketing, but shoppers need feedback about the product they are actually considering. Product-specific reviews provide more useful context.
 
-## 📈 Future Improvements
+## Why Cloudinary?
 
-Potential next steps for the platform include:
+Product images are media infrastructure rather than application data. Cloudinary keeps image storage and delivery separate from the Express application server.
 
-- Semantic vector search with embeddings and a vector database
-- Search analytics and query-quality metrics
-- Recommendation engine based on customer purchase behaviour
-- Order-status notifications
-- Coupon and promotional-code system
-- Product wishlist
-- Better review moderation and verified-purchase badges
-- Pagination and server-side filtering for larger catalogues
-- Automated tests for API controllers and critical frontend flows
-- CI/CD checks for linting, builds and deployment
-- More granular seller/admin permissions
-- Production observability and structured logging
+## Why separate seller authentication?
+
+Customer and seller permissions are fundamentally different. Keeping their authorization boundaries explicit makes the backend easier to reason about and extend.
 
 ---
 
-## 💼 Recruiter / Portfolio Summary
+# 💼 Recruiter / Portfolio Summary
 
-**GreenCart demonstrates end-to-end full-stack development across the customer, backend and commerce layers.**
+**GreenCart demonstrates end-to-end full-stack development across customer experience, backend engineering, commerce infrastructure and applied AI.**
 
-The project is particularly representative of practical engineering work because it combines:
+The project showcases:
 
-- Frontend component architecture with React
-- Responsive UI implementation with Tailwind CSS
-- REST API design with Express
+- React component architecture
+- Responsive UI engineering
+- Vite-based frontend tooling
+- Tailwind CSS design system
+- REST API development with Express
 - MongoDB data modelling with Mongoose
-- JWT-based authentication
-- Secure user-owned resources
-- Cloud media storage
+- JWT authentication
+- Seller/customer role separation
+- Cloud media management
 - Stripe payment integration
-- Seller/admin workflows
-- Product-specific review systems
-- AI-assisted natural-language search
-- Deterministic search fallback logic
-- Error handling and graceful degradation
+- Cart and checkout workflows
+- Order management
+- Product-specific reviews
+- Multivendor-ready seller architecture
+- Gemini-powered natural-language search
+- Deterministic search algorithms
+- AI output validation
+- Graceful AI failure handling
 - Development data seeding
 - Environment-based configuration
 
-### ⭐ Standout feature
+### ⭐ Flagship engineering feature
 
-> **AI Product Search is the flagship feature:** natural-language shopping requests are interpreted by Gemini, mapped back to real MongoDB products, validated server-side, merged with deterministic catalogue matches, and surfaced through an interactive shopping assistant that can add products directly to the cart.
+> **GreenCart AI Product Search combines LLM intent understanding with deterministic product retrieval. Gemini helps understand what the shopper means, while MongoDB remains the source of truth for what can actually be purchased. The backend validates AI-generated product IDs, merges them with deterministic matches, and falls back to catalogue search when AI is unavailable.**
+
+That architecture is intentionally designed for an e-commerce environment where **reliability matters as much as AI capability**.
 
 ---
 
-## 👨‍💻 Author
+# 📈 Future Roadmap
+
+Potential next improvements include:
+
+- Semantic vector search with embeddings
+- Vector database integration
+- Personalized recommendations based on order history
+- Search analytics and query-quality metrics
+- Wishlist functionality
+- Coupons and promotional codes
+- Verified-purchase review badges
+- Review moderation
+- Product pagination and server-side filtering
+- Seller dashboards and analytics
+- More granular seller permissions
+- Automated backend and frontend tests
+- CI/CD build and lint checks
+- Production observability and structured logging
+- Order-status notifications
+- Inventory alerts
+
+---
+
+# 👨‍💻 Author
 
 **Sagnik Dutta**
 
-GitHub: [@duttasirius](https://github.com/duttasirius)
-
-Project repository: [duttasirius/ggrocery](https://github.com/duttasirius/ggrocery)
+- GitHub: [@duttasirius](https://github.com/duttasirius)
+- Repository: [duttasirius/ggrocery](https://github.com/duttasirius/ggrocery)
 
 ---
 
-## 📄 License
+# 📄 License
 
-This project is currently maintained as a portfolio / learning project. Add a formal license file before distributing it as an open-source package.
+This project is currently maintained as a portfolio / learning project. Add a formal open-source license file before distributing the project under an open-source license.
