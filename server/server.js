@@ -11,11 +11,12 @@ import cartRoute from "./routes/cartRoute.js";
 import addressRouter from "./routes/addressRoute.js";
 import orderRouter from "./routes/orderRoute.js";
 import newsLetterRouter from "./routes/newsLetterRoute.js";
+import reviewRouter from "./routes/reviewRoute.js";
 
 const app = express();
 const port = process.env.PORT || 4000;
 
-const allowedOrigins = ["http://localhost:5173"]; // DATABASE CONNECTION
+const allowedOrigins = ["http://localhost:5173"];
 await connectDB();
 await connectCloudinary();
 
@@ -32,6 +33,7 @@ app.use("/api/cart", cartRoute);
 app.use("/api/address", addressRouter);
 app.use("/api/order", orderRouter);
 app.use("/api/newsletter", newsLetterRouter);
+app.use("/api/reviews", reviewRouter);
 
 app.listen(port, () => {
   console.log(`Server is running on ${port}`);
